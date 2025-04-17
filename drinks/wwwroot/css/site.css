@@ -1,0 +1,131 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.cart-item-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.cart-quantity-input {
+    width: 70px;
+}
+
+@keyframes cartBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.cart-bounce {
+    animation: cartBounce 0.5s ease;
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+.card-img-top {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-text {
+    flex-grow: 1;
+}
+
+.btn-primary {
+    margin-top: auto;
+}
+
+#amount-status {
+    font-size: 0.8em;
+    vertical-align: middle;
+}
+
+.coin-input {
+    text-align: center;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.amount-updated {
+    animation: pulse 0.5s ease;
+}
+
+.alert-success {
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+    .alert-success h2 {
+        margin-bottom: 1rem;
+    }
+
+.card-header {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.list-group-item {
+    padding: 1rem 1.5rem;
+}
+
+.quantity-controls {
+    width: 120px;
+}
+
+.quantity-controls button {
+    width: 30px;
+}
+
+.quantity-display {
+    min-width: 30px;
+    text-align: center;
+}

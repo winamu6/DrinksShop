@@ -1,0 +1,106 @@
+﻿@using drinks.Models.Entities
+@model Order
+@{
+    ViewData["Title"] = "Заказ успешно оплачен";
+}
+
+<div class="container py-5">
+    <div class="card border-success shadow-lg">
+        <div class="card-header bg-success text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-0"><i class="bi bi-check-circle-fill me-2"></i>Спасибо за ваш заказ!</h2>
+                <span class="badge bg-light text-success fs-6">Оплачено</span>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded">
+                        <h5><i class="bi bi-receipt me-2"></i>Номер заказа</h5>
+                        <p class="fs-4 fw-bold text-success">@Model.Id</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded">
+                        <h5><i class="bi bi-calendar-date me-2"></i>Дата</h5>
+                        <p class="fs-5">@Model.Date.ToString("dd.MM.yyyy HH:mm")</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded">
+                        <h5><i class="bi bi-cash-stack me-2"></i>Сумма</h5>
+                        <p class="fs-4 fw-bold">@Model.TotalAmount.ToString("0.00") ₽</p>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mb-3"><i class="bi bi-list-ul me-2"></i>Состав заказа:</h4>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Напиток</th>
+                            <th class="text-end">Цена</th>
+                            <th class="text-end">Кол-во</th>
+                            <th class="text-end">Сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <h6 class="mb-0">@item.ProductName</h6>
+                                            <small class="text-muted">@item.BrandName</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-end align-middle">@item.PriceAtOrderTime.ToString("0.00") ₽</td>
+                                <td class="text-end align-middle">@item.Quantity</td>
+                                <td class="text-end align-middle fw-bold">@((item.PriceAtOrderTime * item.Quantity).ToString("0.00")) ₽</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot class="table-group-divider">
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold">Итого:</td>
+                            <td class="text-end fw-bold fs-5 text-success">@Model.TotalAmount.ToString("0.00") ₽</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer bg-transparent border-success">
+            <div class="d-flex justify-content-between">
+                <a href="/" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left-circle me-2"></i>Вернуться к выбору напитков
+                </a>
+                <button class="btn btn-success" onclick="window.print()">
+                    <i class="bi bi-printer me-2"></i>Печать чека
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <p class="text-muted">Нужна помощь? <a href="/contacts" class="text-decoration-none">Свяжитесь с нами</a></p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.card').hide().fadeIn(800);
+            $('tbody tr').each(function(i) {
+                $(this).delay(100 * i).fadeIn(300);
+            });
+        });
+    </script>
+}

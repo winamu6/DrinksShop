@@ -1,0 +1,100 @@
+﻿@model List<drinks.Models.ViewModel.CartItem>
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Цена</th>
+                        <th>Количество</th>
+                        <th>Итого</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr id="cart-item-@item.ProductId">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="@item.ImageUrl" alt="@item.ProductName" style="width: 50px; height: 50px; object-fit: cover;" class="me-3">
+                                    <div>
+                                        <h6 class="mb-0">@item.ProductName</h6>
+                                        <small class="text-muted">@item.BrandName</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="item-price">@item.Price.ToString("C")</td>
+                            <td>
+                                <div class="d-flex align-items-center quantity-controls">
+                                    <button class="btn btn-sm btn-outline-secondary decrease-quantity"
+                                            data-product-id="@item.ProductId">
+                                        -
+                                    </button>
+
+                                    <span class="mx-2 quantity-display">@item.Quantity</span>
+
+                                    <button class="btn btn-sm btn-outline-secondary increase-quantity"
+                                            data-product-id="@item.ProductId">
+                                        +
+                                    </button>
+                                </div>
+                            </td>
+                            <td class="item-total">@item.Total.ToString("C")</td>
+                            <td>
+                                <form asp-action="RemoveItem" method="post" class="d-inline">
+                                    <input type="hidden" name="productId" value="@item.ProductId">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i> Удалить
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end"><strong>Общая сумма:</strong></td>
+                        <td><strong id="cart-total">@Model.Sum(i => i.Total).ToString("C")</strong></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Продолжить покупки
+            </a>
+            <form asp-action="Clear" method="post">
+                <button type="submit" class="btn btn-outline-danger me-2">
+                    <i class="bi bi-trash"></i> Очистить корзину
+                </button>
+            </form>
+            <a asp-action="Checkout" class="btn btn-success">
+                Оформить заказ<i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Ваша корзина пуста
+        </div>
+        <a asp-controller="Products" asp-action="Index" class="btn btn-primary">
+            <i class="bi bi-arrow-left"></i> Вернуться к покупкам
+        </a>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/cart.js"></script>
+}

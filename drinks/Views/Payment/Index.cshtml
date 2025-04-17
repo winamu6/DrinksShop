@@ -1,0 +1,85 @@
+﻿@using drinks.Models.Entities
+@using drinks.Models.ViewModel
+@model List<Coin>
+@{
+    ViewData["Title"] = "Оплата";
+    var totalAmount = ViewBag.TotalAmount as decimal? ?? 0m;
+    var cartItems = ViewBag.CartItems as List<CartItem> ?? new List<CartItem>();
+}
+
+<div class="container mt-4">
+    <h1>Оплата заказа</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Ваш заказ</h4>
+            <ul class="list-group mb-4">
+                @foreach (var item in cartItems)
+                {
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>@item.ProductName × @item.Quantity</span>
+                        <span>@((item.Price * item.Quantity).ToString("0.00")) руб.</span>
+                    </li>
+                }
+            </ul>
+            <div class="alert alert-info">
+                <h5 class="mb-0">Итого: <span id="total-amount">@totalAmount.ToString("0.00")</span> руб.</h5>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h4>Внесение денег</h4>
+            <div class="card">
+                <div class="card-body">
+                    @foreach (var coin in Model.Where(c => !c.IsBlocked).OrderByDescending(c => c.Denomination))
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">Монета @coin.Denomination руб.</label>
+                            <div class="input-group">
+                                <button class="btn btn-outline-secondary coin-decrement" type="button" data-denomination="@coin.Denomination">-</button>
+                                <input type="number" class="form-control coin-input text-center"
+                                       data-denomination="@coin.Denomination"
+                                       min="0" max="10" value="0">
+                                <button class="btn btn-outline-secondary coin-increment" type="button" data-denomination="@coin.Denomination">+</button>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="alert alert-secondary mt-3">
+                        <h5 class="mb-0">
+                            Внесено:
+                            <span id="inserted-amount" class="text-danger">0.00</span> руб.
+                        </h5>
+                    </div>
+
+                    <button id="pay-button" class="btn btn-primary w-100 mt-2" disabled>
+                        Оплатить
+                    </button>
+                    <button id="back-button" class="btn btn-outline-secondary w-100 mt-2">
+                        Вернуться
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="paymentResultModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Результат оплаты</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="paymentResultMessage">
+            </div>
+            <div class="modal-footer">
+                <button id="return-to-catalog" type="button" class="btn btn-primary">Каталог напитков</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/payment.js"></script>
+}
