@@ -1,7 +1,7 @@
 ﻿using drinks.Models.Entities;
 using drinks.Models.ViewModel;
 
-namespace drinks.Services
+namespace Drinks.Services.ProductServices.ProductInterfaces
 {
     public interface IProductService
     {

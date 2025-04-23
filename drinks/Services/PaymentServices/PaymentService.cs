@@ -4,7 +4,7 @@ using drinks.Models.Entities;
 using drinks.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace drinks.Services
+namespace Drinks.Services.PaymentServices
 {
     public class PaymentService
     {

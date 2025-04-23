@@ -1,5 +1,8 @@
 using drinks.Data;
-using drinks.Services;
+using Drinks.Services.CartServices;
+using Drinks.Services.PaymentServices;
+using Drinks.Services.ProductServices;
+using Drinks.Services.ProductServices.ProductInterfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

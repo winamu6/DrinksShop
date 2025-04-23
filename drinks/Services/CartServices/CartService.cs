@@ -1,7 +1,7 @@
 ﻿using drinks.Models.ViewModel;
 using System.Text.Json;
 
-namespace drinks.Services
+namespace Drinks.Services.CartServices
 {
     public class CartService
     {

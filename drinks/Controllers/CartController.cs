@@ -1,6 +1,7 @@
 ﻿using drinks.Data;
 using drinks.Models;
-using drinks.Services;
+using Drinks.Services.CartServices;
+using Drinks.Services.ProductServices.ProductInterfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace drinks.Controllers

@@ -1,9 +1,10 @@
 ﻿using drinks.Data;
 using drinks.Models.Entities;
 using drinks.Models.ViewModel;
+using Drinks.Services.ProductServices.ProductInterfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace drinks.Services
+namespace Drinks.Services.ProductServices
 {
     public class ProductService : IProductService
     {
