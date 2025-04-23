@@ -8,6 +8,8 @@ using Drinks.Services.PaymentServices;
 using Drinks.Services.ProductServices;
 using Drinks.Services.ProductServices.ProductInterfaces;
 using Microsoft.EntityFrameworkCore;
+using Drinks.Repository.ProductRepository.ProductRepositoryInterfaces;
+using Drinks.Repository.ProductRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -32,7 +34,9 @@ builder.Services.AddScoped<IPaymentProductRepository, PaymentProductRepository>(
 builder.Services.AddScoped<ICoinRepository, CoinRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
-
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddSession(options =>
 {
