@@ -1,5 +1,7 @@
 using drinks.Data;
+using Drinks.Repository.CartRepository;
 using Drinks.Services.CartServices;
+using Drinks.Services.CartServices.CartInterfaces;
 using Drinks.Services.PaymentServices;
 using Drinks.Services.ProductServices;
 using Drinks.Services.ProductServices.ProductInterfaces;
@@ -21,6 +23,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICartRepository, SessionCartRepository>();
+builder.Services.AddScoped<CartService>();
+
 
 builder.Services.AddSession(options =>
 {

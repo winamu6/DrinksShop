@@ -1,32 +1,21 @@
 ﻿using drinks.Models.ViewModel;
+using Drinks.Services.CartServices.CartInterfaces;
 using System.Text.Json;
 
 namespace Drinks.Services.CartServices
 {
     public class CartService
     {
-        private const string CartSessionKey = "Cart";
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICartRepository _cartRepository;
 
-        public CartService(IHttpContextAccessor httpContextAccessor)
+        public CartService(ICartRepository cartRepository)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _cartRepository = cartRepository;
         }
 
-        public List<CartItem> GetCart()
-        {
-            var session = _httpContextAccessor.HttpContext?.Session;
-            var cartJson = session?.GetString(CartSessionKey);
-            return cartJson == null
-                ? new List<CartItem>()
-                : JsonSerializer.Deserialize<List<CartItem>>(cartJson)!;
-        }
+        public List<CartItem> GetCart() => _cartRepository.GetCart();
 
-        public void SaveCart(List<CartItem> cart)
-        {
-            var session = _httpContextAccessor.HttpContext?.Session;
-            session?.SetString(CartSessionKey, JsonSerializer.Serialize(cart));
-        }
+        public void SaveCart(List<CartItem> cart) => _cartRepository.SaveCart(cart);
 
         public void AddToCart(Product product, int quantity = 1)
         {
