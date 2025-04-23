@@ -1,5 +1,5 @@
 ﻿using drinks.Models.ViewModel;
-using Drinks.Services.CartServices.CartInterfaces;
+using Drinks.Repository.CartRepository.CartInterfaces;
 using System.Text.Json;
 
 namespace Drinks.Services.CartServices

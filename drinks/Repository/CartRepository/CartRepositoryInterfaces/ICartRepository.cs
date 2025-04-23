@@ -1,6 +1,6 @@
 ﻿using drinks.Models.ViewModel;
 
-namespace Drinks.Services.CartServices.CartInterfaces
+namespace Drinks.Repository.CartRepository.CartInterfaces
 {
     public interface ICartRepository
     {

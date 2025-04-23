@@ -2,16 +2,27 @@
 using drinks.Models;
 using drinks.Models.Entities;
 using drinks.Models.ViewModel;
+using Drinks.Repository.PaymentRepository.PaymentInterfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Drinks.Services.PaymentServices
 {
     public class PaymentService
     {
+        private readonly IPaymentProductRepository _productRepository;
+        private readonly ICoinRepository _coinRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly AppDbContext _context;
 
-        public PaymentService(AppDbContext context)
+        public PaymentService(
+            IPaymentProductRepository productRepository,
+            ICoinRepository coinRepository,
+            IOrderRepository orderRepository,
+            AppDbContext context)
         {
+            _productRepository = productRepository;
+            _coinRepository = coinRepository;
+            _orderRepository = orderRepository;
             _context = context;
         }
 
@@ -23,7 +34,7 @@ namespace Drinks.Services.PaymentServices
             {
                 foreach (var item in request.CartItems)
                 {
-                    var product = await _context.Products.FindAsync(item.ProductId);
+                    var product = await _productRepository.GetProductAsync(item.ProductId);
                     if (product == null || product.Quantity < item.Quantity)
                     {
                         return new PaymentResult
@@ -51,10 +62,7 @@ namespace Drinks.Services.PaymentServices
 
                 if (changeAmount > 0)
                 {
-                    var availableCoins = await _context.Coins
-                        .Where(c => c.Count > 0)
-                        .OrderByDescending(c => c.Denomination)
-                        .ToListAsync();
+                    var availableCoins = await _coinRepository.GetAvailableCoinsAsync();
 
                     decimal remainingChange = changeAmount;
 
@@ -70,6 +78,7 @@ namespace Drinks.Services.PaymentServices
                             changeCoins.Add(coin.Denomination, coinsToTake);
                             remainingChange -= coin.Denomination * coinsToTake;
                             coin.Count -= coinsToTake;
+                            await _coinRepository.UpdateCoinAsync(coin);
                         }
                     }
 
@@ -85,21 +94,18 @@ namespace Drinks.Services.PaymentServices
 
                 foreach (var item in request.CartItems)
                 {
-                    var product = await _context.Products.FindAsync(item.ProductId);
-                    if (product != null)
-                    {
-                        product.Quantity -= item.Quantity;
-                    }
+                    var product = await _productRepository.GetProductAsync(item.ProductId);
+                    product.Quantity -= item.Quantity;
+                    await _productRepository.UpdateProductQuantityAsync(product);
                 }
 
                 foreach (var coin in request.InsertedCoins)
                 {
-                    var dbCoin = await _context.Coins
-                        .FirstOrDefaultAsync(c => c.Denomination == coin.Key);
-
+                    var dbCoin = await _coinRepository.GetCoinByDenominationAsync(coin.Key);
                     if (dbCoin != null)
                     {
                         dbCoin.Count += coin.Value;
+                        await _coinRepository.UpdateCoinAsync(dbCoin);
                     }
                 }
 
@@ -117,7 +123,7 @@ namespace Drinks.Services.PaymentServices
                     }).ToList()
                 };
 
-                _context.Orders.Add(order);
+                await _orderRepository.AddOrderAsync(order);
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
 
@@ -140,4 +146,5 @@ namespace Drinks.Services.PaymentServices
             }
         }
     }
+
 }

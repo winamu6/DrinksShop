@@ -1,7 +1,9 @@
 using drinks.Data;
 using Drinks.Repository.CartRepository;
+using Drinks.Repository.CartRepository.CartInterfaces;
+using Drinks.Repository.PaymentRepository.PaymentInterfaces;
+using Drinks.Repository.PaymentRepository;
 using Drinks.Services.CartServices;
-using Drinks.Services.CartServices.CartInterfaces;
 using Drinks.Services.PaymentServices;
 using Drinks.Services.ProductServices;
 using Drinks.Services.ProductServices.ProductInterfaces;
@@ -25,6 +27,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartRepository, SessionCartRepository>();
 builder.Services.AddScoped<CartService>();
+
+builder.Services.AddScoped<IPaymentProductRepository, PaymentProductRepository>();
+builder.Services.AddScoped<ICoinRepository, CoinRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
 
 
 builder.Services.AddSession(options =>
