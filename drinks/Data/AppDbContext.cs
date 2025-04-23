@@ -44,7 +44,6 @@ public class AppDbContext : DbContext
                 Price = 80, 
                 Quantity = 10, 
                 ImageUrl = "/images/products/coca-cola.png",
-                IsInCart = false
             },
 
             new Product { 
@@ -54,7 +53,6 @@ public class AppDbContext : DbContext
                 Price = 75, 
                 Quantity = 8, 
                 ImageUrl = "/images/products/sprite.png",
-                IsInCart = false
             },
 
             new Product { 
@@ -64,7 +62,6 @@ public class AppDbContext : DbContext
                 Price = 70, 
                 Quantity = 5, 
                 ImageUrl = "/images/products/fanta.png",
-                IsInCart = false
             },
 
             new Product { 
@@ -74,7 +71,6 @@ public class AppDbContext : DbContext
                 Price = 70, 
                 Quantity = 5, 
                 ImageUrl = "/images/products/pepper.png",
-                IsInCart = false
             }
         );
 

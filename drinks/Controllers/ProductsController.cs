@@ -1,6 +1,7 @@
 ﻿using drinks.Models.Entities;
 using drinks.Models.ViewModel;
 using drinks.Services;
+using Drinks.Models.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,15 +27,17 @@ namespace drinks.Controllers
                 var priceRange = await _productService.GetPriceRangeAsync();
 
                 var cartItems = _cartService.GetCart();
-                var cartProductIds = cartItems.Select(i => i.ProductId).ToList();
+                var cartProductIds = cartItems.Select(i => i.ProductId).ToHashSet();
 
-                if (products != null)
+                var productViewModels = products?.Select(p => new ProductViewModel
                 {
-                    foreach (var product in products)
-                    {
-                        product.IsInCart = cartProductIds.Contains(product.Id);
-                    }
-                }
+                    Id = p.Id,
+                    Name = p.Name,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    Quantity = p.Quantity,
+                    IsInCart = cartProductIds.Contains(p.Id)
+                }).ToList() ?? new List<ProductViewModel>();
 
                 ViewBag.Brands = brands ?? new List<Brand>();
                 ViewBag.SelectedBrand = brandId ?? 0;
@@ -42,9 +45,9 @@ namespace drinks.Controllers
                 ViewBag.MinPrice = priceRange.MinPrice;
                 ViewBag.MaxPriceRange = priceRange.MaxPrice;
 
-                return View(products ?? new List<Product>());
+                return View(productViewModels);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.Brands = new List<Brand>();
                 ViewBag.SelectedBrand = 0;
@@ -52,7 +55,7 @@ namespace drinks.Controllers
                 ViewBag.MinPrice = 0;
                 ViewBag.MaxPriceRange = 100;
 
-                return View(new List<Product>());
+                return View(new List<ProductViewModel>());
             }
         }
     }

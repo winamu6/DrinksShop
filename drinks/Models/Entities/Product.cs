@@ -22,6 +22,5 @@ namespace drinks.Models.ViewModel
         [Range(0, int.MaxValue)]
         public int Quantity { get; set; }
         public string ImageUrl { get; set; } = "/images/products/default.png";
-        public bool IsInCart { get; set; }
     }
 }
