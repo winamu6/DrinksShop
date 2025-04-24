@@ -11,45 +11,40 @@
     var maxPriceRange = ViewBag.MaxPriceRange as decimal? ?? 100m;
 }
 
-<style>
-    .card-in-cart {
-        border: 2px solid #28a745;
-        box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
-    }
-</style>
+<link rel="stylesheet" href="~/css/product.css" asp-append-version="true" />
 
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>@ViewData["Title"]</h1>
-        <a asp-controller="Cart" asp-action="Index" class="btn btn-primary btn-lg position-relative" id="cart-button">
-            Корзина
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cart-count">
-                0
-            </span>
-        </a>
-    </div>
+    <h1 class="mb-4">@ViewData["Title"]</h1>
 
-    <form class="row mb-4">
-        <div class="col-md-4">
-            <div class="mb-3">
-                <label for="brand-select" class="form-label">Бренд</label>
-                <select id="brand-select" class="form-select">
-                    <option value="0">Все бренды</option>
-                    @foreach (var brand in brands)
-                    {
-                        <option value="@brand.Id" selected="@(brand.Id == selectedBrand)">@brand.Name</option>
-                    }
-                </select>
-            </div>
+    <form class="filter-group mb-4" id="filter-form">
+        <div>
+            <label for="brand-select" class="form-label">Выберите бренд</label>
+            <select id="brand-select" class="form-select">
+                <option value="0">Все бренды</option>
+                @foreach (var brand in brands)
+                {
+                    <option value="@brand.Id" selected="@(brand.Id == selectedBrand)">@brand.Name</option>
+                }
+            </select>
         </div>
-        <div class="col-md-8">
-            <div class="mb-3">
-                <label for="price-slider" class="form-label">Цена до: <span id="price-value">@maxPrice.ToString("0")</span> руб.</label>
-                <input type="range" class="form-range" id="price-slider"
-                       min="@minPrice.ToString("0")"
-                       max="@maxPriceRange.ToString("0")"
-                       value="@maxPrice.ToString("0")">
+
+        <div>
+            <label for="price-slider" class="form-label">Стоимость: <span id="price-value">@maxPrice.ToString("0")</span> руб.</label>
+            <div class="d-flex justify-content-between text-muted mb-1">
+                <small>от @minPrice.ToString("0") руб.</small>
+                <small>до @maxPriceRange.ToString("0") руб.</small>
             </div>
+            <input type="range" class="form-range" id="price-slider"
+                   min="@minPrice.ToString("0")"
+                   max="@maxPriceRange.ToString("0")"
+                   value="@maxPrice.ToString("0")">
+        </div>
+
+        <div>
+            <a asp-controller="Cart" asp-action="Index" class="btn w-100 position-relative cart-button cart-empty" id="cart-button">
+                <i class="bi bi-cart"></i> Корзина
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" id="cart-count">0</span>
+            </a>
         </div>
     </form>
 

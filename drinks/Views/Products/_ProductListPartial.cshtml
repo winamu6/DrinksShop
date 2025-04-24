@@ -6,26 +6,21 @@
     @foreach (var product in Model)
     {
         <div class="col-md-3 mb-4">
-            <div class="card h-100">
-                <img src="@product.ImageUrl" class="card-img-top p-3"
-                     alt="@product.Name" style="height: 200px; object-fit: contain;" />
-                <div class="card-body">
+            <div class="card h-100 @(product.IsInCart ? "card-in-cart" : "")">
+                <img src="@product.ImageUrl" class="card-img-top p-3" alt="@product.Name"
+                     style="height: 200px; object-fit: contain;" />
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">
-                        @product.Price.ToString("C")<br />
-                        @if (product.Quantity > 0)
-                        {
-                            <span class="text-success">В наличии</span>
-                        }
-                        else
-                        {
-                            <span class="text-danger">Нет в наличии</span>
-                        }
-                    </p>
-                    <button class="btn @(product.IsInCart ? "btn-success" : "btn-primary") add-to-cart"
+                    <p class="card-text fw-bold">@product.Price.ToString("0") руб.</p>
+
+                    <button class="btn w-100 mt-auto add-to-cart
+                               @(product.Quantity == 0 ? "btn-secondary" :
+                                 product.IsInCart ? "btn-success" : "btn-warning")"
                             data-product-id="@product.Id"
-                            disabled="@(product.Quantity == 0 || product.IsInCart)">
-                        @(product.Quantity == 0 ? "Нет в наличии" : product.IsInCart ? "Добавлено" : "В корзину")
+                            data-available="@(product.Quantity > 0 ? "true" : "false")"
+                    @(product.Quantity == 0 || product.IsInCart ? "disabled" : "")>
+                        @(product.Quantity == 0 ? "Закончился" :
+                            product.IsInCart ? "Выбрано" : "Выбрать")
                     </button>
                 </div>
             </div>

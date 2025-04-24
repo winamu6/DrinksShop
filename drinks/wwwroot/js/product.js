@@ -7,7 +7,7 @@
                 response.forEach(function (item) {
                     const $button = $(`.add-to-cart[data-product-id="${item.productId}"]`);
                     $button.closest('.card').addClass('card-in-cart');
-                    $button.text('Добавлено').prop('disabled', true);
+                    $button.text('Выбрано').prop('disabled', true);
                 });
             });
     }
@@ -16,10 +16,18 @@
         $.get('/Cart/GetCount')
             .done(function (response) {
                 $('#cart-count').text(response.count);
-                $('#cart-button').toggleClass('disabled', response.count === 0);
+                const cartButton = $('#cart-button');
+
+                if (response.count > 0) {
+                    cartButton.removeClass('cart-empty').addClass('cart-filled');
+                } else {
+                    cartButton.removeClass('cart-filled').addClass('cart-empty');
+                }
+
                 checkCartItems();
             });
     }
+
 
     updateCartCount();
 
@@ -64,8 +72,15 @@
             success: function (response) {
                 localStorage.setItem('cartCount', response.count);
                 $('#cart-count').text(response.count);
+
                 $card.addClass('card-in-cart');
-                $button.text('Добавлено').prop('disabled', true);
+
+                $button
+                    .removeClass('btn-primary btn-warning')
+                    .addClass('btn-success')
+                    .text('Выбрано')
+                    .prop('disabled', true);
+
                 toastr.success('Товар добавлен в корзину');
                 $(document).trigger('cartUpdated');
             },
@@ -75,4 +90,5 @@
             }
         });
     });
+
 });
