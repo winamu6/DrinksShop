@@ -39,8 +39,18 @@
     function filterProducts() {
         const brandId = $('#brand-select').val();
         const maxPrice = $('#price-slider').val();
-        window.location.href = `/Products/Index?brandId=${brandId}&maxPrice=${maxPrice}`;
+        const minPrice = $('#price-slider').attr('min');
+
+        $.get('/Products/Filter', { brandId, minPrice, maxPrice })
+            .done(function (html) {
+                $('#products-container').html(html);
+                checkCartItems();
+            })
+            .fail(function () {
+                toastr.error('Ошибка при фильтрации товаров');
+            });
     }
+
 
     $(document).on('click', '.add-to-cart', function () {
         const productId = $(this).data('product-id');

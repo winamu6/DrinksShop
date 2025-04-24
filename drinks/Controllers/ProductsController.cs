@@ -19,11 +19,11 @@ namespace drinks.Controllers
             _cartService = cartService;
         }
 
-        public async Task<IActionResult> Index(int? brandId, decimal? maxPrice)
+        public async Task<IActionResult> Index(int? brandId, decimal? minPrice, decimal? maxPrice)
         {
             try
             {
-                var products = await _productService.GetProductsAsync(brandId, maxPrice: maxPrice);
+                var products = await _productService.GetProductsAsync(brandId, minPrice, maxPrice);
                 var brands = await _productService.GetBrandsAsync();
                 var priceRange = await _productService.GetPriceRangeAsync();
 
@@ -59,5 +59,26 @@ namespace drinks.Controllers
                 return View(new List<ProductViewModel>());
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Filter(int? brandId, decimal? minPrice, decimal? maxPrice)
+        {
+            var products = await _productService.GetProductsAsync(brandId, minPrice, maxPrice);
+            var cartItems = _cartService.GetCart();
+            var cartProductIds = cartItems.Select(i => i.ProductId).ToHashSet();
+
+            var productViewModels = products.Select(p => new ProductViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                ImageUrl = p.ImageUrl,
+                Price = p.Price,
+                Quantity = p.Quantity,
+                IsInCart = cartProductIds.Contains(p.Id)
+            }).ToList();
+
+            return PartialView("_ProductListPartial", productViewModels);
+        }
+
     }
 }
