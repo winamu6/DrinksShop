@@ -1,5 +1,6 @@
 ﻿using drinks.Data;
 using drinks.Models;
+using drinks.Models.ViewModel;
 using Drinks.Services.CartServices;
 using Drinks.Services.ProductServices.ProductInterfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -140,5 +141,26 @@ namespace drinks.Controllers
                 itemsCount = _cartService.GetCartCount()
             });
         }
+
+        [HttpGet]
+        public IActionResult GetCartItems()
+        {
+            var cartItems = _cartService.GetCart();
+            var items = cartItems.Select(item => new
+            {
+                productId = item.ProductId,
+                quantity = item.Quantity
+            });
+
+            return Json(items);
+        }
+
+        [HttpGet]
+        public IActionResult GetCartTotal()
+        {
+            var total = _cartService.GetCartTotal();
+            return Json(total);
+        }
+
     }
 }
