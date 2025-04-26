@@ -9,7 +9,6 @@
     const totalAmount = parseFloat(totalAmountSpan.textContent.replace(' руб.', '').replace(',', '.')) || 0;
     let insertedAmount = 0;
 
-    // Установка обработчиков событий
     coinIncrements.forEach(btn => {
         btn.addEventListener('click', () => {
             const input = btn.parentElement.querySelector('.coin-input');
