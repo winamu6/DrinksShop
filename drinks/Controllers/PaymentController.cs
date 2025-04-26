@@ -1,12 +1,12 @@
-﻿using drinks.Data;
-using drinks.Models;
+﻿using Drinks.Data;
+using Drinks.Models;
 using Drinks.Services.CartServices;
 using Drinks.Services.PaymentServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace drinks.Controllers
+namespace Drinks.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -77,7 +77,7 @@ namespace drinks.Controllers
         }
 
         [HttpGet("success/{orderId}")]
-        public async Task<IActionResult> Success(int orderId)
+        public async Task<IActionResult> Success(int orderId, decimal? changeAmount, string coins)
         {
             try
             {
@@ -90,12 +90,18 @@ namespace drinks.Controllers
                     return NotFound();
                 }
 
+                ViewBag.ChangeAmount = changeAmount ?? 0;
+                ViewBag.ChangeCoins = string.IsNullOrEmpty(coins)
+                    ? new Dictionary<int, int>()
+                    : System.Text.Json.JsonSerializer.Deserialize<Dictionary<int, int>>(coins);
+
                 return View(order);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, "Произошла ошибка при обработке запроса");
             }
         }
+
     }
 }

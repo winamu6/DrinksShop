@@ -1,4 +1,4 @@
-namespace drinks.Models.ViewModel
+namespace Drinks.Models.ViewModel
 {
     public class ErrorViewModel
     {

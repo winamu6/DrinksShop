@@ -1,6 +1,6 @@
-﻿using drinks.Models.Entities;
+﻿using Drinks.Models.Entities;
 
-namespace drinks.Models.ViewModel
+namespace Drinks.Models.ViewModel
 {
     public class PaymentResult
     {

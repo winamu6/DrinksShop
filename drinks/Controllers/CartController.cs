@@ -1,11 +1,11 @@
-﻿using drinks.Data;
-using drinks.Models;
-using drinks.Models.ViewModel;
+﻿using Drinks.Data;
+using Drinks.Models;
+using Drinks.Models.ViewModel;
 using Drinks.Services.CartServices;
 using Drinks.Services.ProductServices.ProductInterfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace drinks.Controllers
+namespace Drinks.Controllers
 {
     public class CartController : Controller
     {

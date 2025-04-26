@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using drinks.Models.Entities;
+using Drinks.Models.Entities;
 
-namespace drinks.Models.ViewModel
+namespace Drinks.Models.ViewModel
 {
     public class Product
     {

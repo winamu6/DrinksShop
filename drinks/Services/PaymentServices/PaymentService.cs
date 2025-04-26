@@ -1,7 +1,7 @@
-﻿using drinks.Data;
-using drinks.Models;
-using drinks.Models.Entities;
-using drinks.Models.ViewModel;
+﻿using Drinks.Data;
+using Drinks.Models;
+using Drinks.Models.Entities;
+using Drinks.Models.ViewModel;
 using Drinks.Repository.PaymentRepository.PaymentInterfaces;
 using Microsoft.EntityFrameworkCore;
 

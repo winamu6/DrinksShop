@@ -1,5 +1,5 @@
-﻿using drinks.Models.Entities;
-using drinks.Models.ViewModel;
+﻿using Drinks.Models.Entities;
+using Drinks.Models.ViewModel;
 
 namespace Drinks.Services.ProductServices.ProductInterfaces
 {
