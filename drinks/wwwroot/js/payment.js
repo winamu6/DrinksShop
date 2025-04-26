@@ -9,7 +9,6 @@
     const totalAmount = parseFloat(totalAmountSpan.textContent.replace(' руб.', '').replace(',', '.')) || 0;
     let insertedAmount = 0;
 
-    // Установка обработчиков событий
     coinIncrements.forEach(btn => {
         btn.addEventListener('click', () => {
             const input = btn.parentElement.querySelector('.coin-input');
@@ -79,11 +78,48 @@
 
             await clearCartAndRedirect(result.order.id, result.changeAmount, result.changeCoins);
         } catch (error) {
+
             console.error('Ошибка оплаты:', error);
             alert('Ошибка оплаты: ' + error.message);
+
+            console.error('Payment error:', error);
+            showPaymentResult(`
+                <div class="alert alert-danger">
+                    <h5>Ошибка при обработке платежа</h5>
+                    <p>${error.message}</p>
+                    <p class="small">Попробуйте ещё раз или обратитесь в поддержку</p>
+                </div>
+            `);
         } finally {
             payButton.disabled = false;
             payButton.textContent = 'Оплатить';
+        }
+    }
+    function handleSuccessfulPayment(result) {
+        clearCartAndRedirect(result.order.id, result.changeAmount, result.changeCoins);
+    }
+
+    function handleFailedPayment(result) {
+        const errorMessage = result.requiresExactChange
+            ? `${result.message}<br><br>Попробуйте внести другую комбинацию монет.`
+            : result.message;
+
+        showPaymentResult(`<div class="alert alert-danger">${errorMessage}</div>`);
+    }
+
+    function showPaymentResult(content) {
+        paymentResultMessage.innerHTML = content;
+        paymentResultModal.show();
+    }
+
+    async function clearCartAndRedirect(orderId, changeAmount, changeCoins) {
+        try {
+            await fetch('/Cart/Clear', { method: 'POST' });
+
+            const coinsParam = encodeURIComponent(JSON.stringify(changeCoins));
+            window.location.href = `/Payment/Success/${orderId}?changeAmount=${changeAmount}&coins=${coinsParam}`;
+        } catch (error) {
+            console.error('Failed to clear cart:', error);
         }
     }
 
@@ -98,5 +134,8 @@
         }
     }
 
-    updateInsertedAmount(); // Обновить сумму сразу при загрузке
+    updateInsertedAmount();
+
+    initEventListeners();
+    updateInsertedAmount();
 });

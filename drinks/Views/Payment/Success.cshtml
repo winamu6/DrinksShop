@@ -20,7 +20,7 @@
                     <h5 class="mb-4">Ваши монеты:</h5>
                     @foreach (var coin in changeCoins.OrderBy(c => c.Key))
                     {
-                        <div class="d-flex justify-content-between align-items-center mb-3 px-4">
+                        <div class="d-flex gap-5 align-items-center mb-3 px-4">
                             <span class="fs-4 rounded-circle border border-secondary p-2" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
                                 @coin.Key
                             </span>
