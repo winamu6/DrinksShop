@@ -76,6 +76,15 @@
                 throw new Error(result?.message || 'Неизвестная ошибка при оплате');
             }
 
+            if (!result) {
+                throw new Error("Пустой ответ от сервера");
+            }
+
+            if (result.success) {
+                handleSuccessfulPayment(result);
+            } else {
+                handleFailedPayment(result);
+            }
             await clearCartAndRedirect(result.order.id, result.changeAmount, result.changeCoins);
         } catch (error) {
 
@@ -135,6 +144,84 @@
     }
 
     updateInsertedAmount();
+
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(insertedCoins)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => null);
+                throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (!result) {
+                throw new Error("Пустой ответ от сервера");
+            }
+
+            if (result.success) {
+                handleSuccessfulPayment(result);
+            } else {
+                handleFailedPayment(result);
+            }
+        } catch (error) {
+            console.error('Payment error:', error);
+            showPaymentResult(`
+            <div class="alert alert-danger">
+                <h5>Ошибка при обработке платежа</h5>
+                <p>${error.message}</p>
+                <p class="small">Попробуйте ещё раз или обратитесь в поддержку</p>
+            </div>
+        `);
+        } finally {
+            payButton.disabled = false;
+            payButton.textContent = 'Оплатить';
+        }
+    }
+
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(insertedCoins)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => null);
+                throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (!result) {
+                throw new Error("Пустой ответ от сервера");
+            }
+
+            if (result.success) {
+                handleSuccessfulPayment(result);
+            } else {
+                handleFailedPayment(result);
+            }
+        } catch (error) {
+            console.error('Payment error:', error);
+            showPaymentResult(`
+            <div class="alert alert-danger">
+                <h5>Ошибка при обработке платежа</h5>
+                <p>${error.message}</p>
+                <p class="small">Попробуйте ещё раз или обратитесь в поддержку</p>
+            </div>
+        `);
+        } finally {
+            payButton.disabled = false;
+            payButton.textContent = 'Оплатить';
+        }
+    }
 
     initEventListeners();
     updateInsertedAmount();
