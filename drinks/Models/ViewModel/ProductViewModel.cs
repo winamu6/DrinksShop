@@ -1,4 +1,4 @@
-﻿using drinks.Models.ViewModel;
+﻿using Drinks.Models.ViewModel;
 
 namespace Drinks.Models.ViewModel
 {

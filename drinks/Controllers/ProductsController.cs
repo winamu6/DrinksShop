@@ -1,12 +1,12 @@
-﻿using drinks.Models.Entities;
-using drinks.Models.ViewModel;
+﻿using Drinks.Models.Entities;
+using Drinks.Models.ViewModel;
 using Drinks.Models.ViewModel;
 using Drinks.Services.CartServices;
 using Drinks.Services.ProductServices.ProductInterfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace drinks.Controllers
+namespace Drinks.Controllers
 {
     public class ProductsController : Controller
     {

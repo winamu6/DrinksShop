@@ -1,4 +1,4 @@
-using drinks.Data;
+using Drinks.Data;
 using Drinks.Repository.CartRepository;
 using Drinks.Repository.CartRepository.CartInterfaces;
 using Drinks.Repository.PaymentRepository.PaymentInterfaces;
@@ -37,6 +37,8 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {

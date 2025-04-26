@@ -1,6 +1,6 @@
-﻿using drinks.Models.ViewModel;
+﻿using Drinks.Models.ViewModel;
 
-namespace drinks.Models
+namespace Drinks.Models
 {
     public class PaymentRequest
     {

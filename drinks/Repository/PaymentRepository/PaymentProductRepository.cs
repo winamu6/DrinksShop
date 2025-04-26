@@ -1,12 +1,11 @@
-﻿using drinks.Data;
-using drinks.Models.Entities;
-using drinks.Models.ViewModel;
+﻿using Drinks.Data;
+using Drinks.Models.Entities;
+using Drinks.Models.ViewModel;
 using Drinks.Repository.PaymentRepository.PaymentInterfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Drinks.Repository.PaymentRepository
 {
-    // PaymentProductRepository.cs
     public class PaymentProductRepository : IPaymentProductRepository
     {
         private readonly AppDbContext _context;
@@ -23,7 +22,6 @@ namespace Drinks.Repository.PaymentRepository
             => _context.Products.Update(product);
     }
 
-    // CoinRepository.cs
     public class CoinRepository : ICoinRepository
     {
         private readonly AppDbContext _context;
@@ -43,7 +41,6 @@ namespace Drinks.Repository.PaymentRepository
             => _context.Coins.Update(coin);
     }
 
-    // OrderRepository.cs
     public class OrderRepository : IOrderRepository
     {
         private readonly AppDbContext _context;

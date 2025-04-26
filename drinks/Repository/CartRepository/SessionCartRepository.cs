@@ -1,4 +1,4 @@
-﻿using drinks.Models.ViewModel;
+﻿using Drinks.Models.ViewModel;
 using Drinks.Repository.CartRepository.CartInterfaces;
 using System.Text.Json;
 

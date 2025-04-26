@@ -1,5 +1,5 @@
-﻿@using drinks.Models.Entities
-@using drinks.Models.ViewModel
+﻿@using Drinks.Models.Entities
+@using Drinks.Models.ViewModel
 @model List<Coin>
 @{
     ViewData["Title"] = "Оплата";
@@ -7,60 +7,70 @@
     var cartItems = ViewBag.CartItems as List<CartItem> ?? new List<CartItem>();
 }
 
-<div class="container mt-4">
-    <h1>Оплата заказа</h1>
+<div class="container my-5">
+    <h1 class="mb-4">Оплата</h1>
 
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Ваш заказ</h4>
-            <ul class="list-group mb-4">
-                @foreach (var item in cartItems)
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead class="border-bottom">
+                <tr>
+                    <th>Номинал</th>
+                    <th class="text-center">Количество</th>
+                    <th class="text-end">Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var coin in Model.Where(c => !c.IsBlocked).OrderBy(c => c.Denomination))
                 {
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>@item.ProductName × @item.Quantity</span>
-                        <span>@((item.Price * item.Quantity).ToString("0.00")) руб.</span>
-                    </li>
-                }
-            </ul>
-            <div class="alert alert-info">
-                <h5 class="mb-0">Итого: <span id="total-amount">@totalAmount.ToString("0.00")</span> руб.</h5>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <h4>Внесение денег</h4>
-            <div class="card">
-                <div class="card-body">
-                    @foreach (var coin in Model.Where(c => !c.IsBlocked).OrderByDescending(c => c.Denomination))
-                    {
-                        <div class="mb-3">
-                            <label class="form-label">Монета @coin.Denomination руб.</label>
-                            <div class="input-group">
-                                <button class="btn btn-outline-secondary coin-decrement" type="button" data-denomination="@coin.Denomination">-</button>
-                                <input type="number" class="form-control coin-input text-center"
-                                       data-denomination="@coin.Denomination"
-                                       min="0" max="10" value="0">
-                                <button class="btn btn-outline-secondary coin-increment" type="button" data-denomination="@coin.Denomination">+</button>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle border border-dark d-flex justify-content-center align-items-center"
+                                     style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                    @coin.Denomination
+                                </div>
+                                <span class="ms-2">@coin.Denomination рубль(ей)</span>
                             </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="button" class="btn btn-outline-dark btn-sm coin-decrement" data-denomination="@coin.Denomination" style="width: 30px; height: 30px;">-</button>
+                                <input type="text" class="form-control text-center mx-2 coin-input"
+                                       data-denomination="@coin.Denomination" value="1" style="width: 50px;" readonly />
+                                <button type="button" class="btn btn-outline-dark btn-sm coin-increment" data-denomination="@coin.Denomination" style="width: 30px; height: 30px;">+</button>
+                            </div>
+                        </td>
+                        <td class="text-end">
+                            <span class="coin-sum" data-denomination="@coin.Denomination">@coin.Denomination руб.</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <h4>
+                                Итоговая сумма: <span id="total-amount">@totalAmount.ToString("0.00") руб.</span>
+                            </h4>
+                            <h4 class="me-5">
+                                Вы внесли: <span id="inserted-amount" class="text-danger">0 руб.</span>
+                            </h4>
                         </div>
-                    }
+                    </td>
+                </tr>
+            </tfoot>
 
-                    <div class="alert alert-secondary mt-3">
-                        <h5 class="mb-0">
-                            Внесено:
-                            <span id="inserted-amount" class="text-danger">0.00</span> руб.
-                        </h5>
-                    </div>
+        </table>
+    </div>
 
-                    <button id="pay-button" class="btn btn-primary w-100 mt-2" disabled>
-                        Оплатить
-                    </button>
-                    <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left"></i> Вернуться
-                    </a>
-                </div>
-            </div>
-        </div>
+    <div class="d-flex justify-content-between mt-4">
+        <a asp-controller="Cart" asp-action="Index" class="btn btn-warning btn-lg px-5">
+            Вернуться
+        </a>
+        <button id="pay-button" class="btn btn-success btn-lg px-5" disabled>
+            Оплатить
+        </button>
     </div>
 </div>
 
@@ -69,12 +79,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Результат оплаты</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
-            <div class="modal-body" id="paymentResultMessage">
-            </div>
+            <div class="modal-body" id="paymentResultMessage"></div>
             <div class="modal-footer">
-                <button id="return-to-catalog" type="button" class="btn btn-primary">Каталог напитков</button>
+                <a asp-controller="Products" asp-action="Index" class="btn btn-primary">Каталог напитков</a>
             </div>
         </div>
     </div>

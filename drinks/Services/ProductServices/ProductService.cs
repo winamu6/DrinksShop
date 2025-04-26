@@ -1,6 +1,6 @@
-﻿using drinks.Data;
-using drinks.Models.Entities;
-using drinks.Models.ViewModel;
+﻿using Drinks.Data;
+using Drinks.Models.Entities;
+using Drinks.Models.ViewModel;
 using Drinks.Repository.ProductRepository.ProductRepositoryInterfaces;
 using Drinks.Services.ProductServices.ProductInterfaces;
 using Microsoft.EntityFrameworkCore;

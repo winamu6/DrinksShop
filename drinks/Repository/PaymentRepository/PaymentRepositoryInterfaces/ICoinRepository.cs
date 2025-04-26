@@ -1,4 +1,4 @@
-﻿using drinks.Models.Entities;
+﻿using Drinks.Models.Entities;
 
 namespace Drinks.Repository.PaymentRepository.PaymentInterfaces
 {

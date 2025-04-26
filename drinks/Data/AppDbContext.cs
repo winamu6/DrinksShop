@@ -1,8 +1,8 @@
-﻿using drinks.Models.Entities;
-using drinks.Models.ViewModel;
+﻿using Drinks.Models.Entities;
+using Drinks.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace drinks.Data;
+namespace Drinks.Data;
 
 public class AppDbContext : DbContext
 {

@@ -1,4 +1,4 @@
-﻿namespace drinks.Models.Entities
+﻿namespace Drinks.Models.Entities
 {
     public class Coin
     {
